@@ -1,0 +1,11 @@
+class MessageType:
+    text_message = 'Text'
+    sticker_message = 'Sticker'
+    template_message = 'TemplateMessage'
+    purchase_message = 'PurchaseMessage'
+    bank_message = 'BankMessage'
+    order_message = 'OrderMessage'
+    unsupported_message = 'Unsupported'
+    json_message = 'Json'
+    document_message = 'Document'
+    template_response_message = 'TemplateMessageResponse'
