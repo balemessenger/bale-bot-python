@@ -95,5 +95,5 @@ def purchase_message(bot, update):
     dispatcher.finish_conversation(update)
 ```
 
-visit [https://bale-developers](developers.bale.ai) for more information
+visit [bale-developers](https://developers.bale.ai) for more information
 
