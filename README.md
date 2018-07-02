@@ -6,7 +6,7 @@ Python SDK and samples for [Bale bot messenger](https://developers.bale.ai).
 
 ### Register for an Access Token
 
-You'll need to create your bot by [@Bot_Father](https://web.bale.ai/), Bot_Father gives you a Token to start.
+You'll need to create your bot by [@Bot_Father](https://web.bale.ai/). Bot_Father gives you a Token to start.
 
 ### Installation
 
@@ -31,12 +31,12 @@ dispatcher = updater.dispatcher
 
 ```
 
-__Note__: you need set Config.py if you want to get logger
+__Note__: You need to set Config.py if you want to use the logger class
 
 
-##### Sending a generic simple message:
+##### Simple communication with client
 
-> allows you to hear and answer the client.
+> Allows you to hear from client and answer.
 
 
 ```python
@@ -49,9 +49,9 @@ def hear(bot, update):
 
 
 ##### Sending a simple voice message:
-__Note__:You should upload it first!
+__Note__:You should upload the voice file first.
 
-> allows you to send voice message(you can send a document in a same way).
+> Allows you to send a voice message. (You can also send a document in the same way).
 
 
 ```python
@@ -66,8 +66,7 @@ def send_voice(bot, update):
 ##### Sending a generic template message:
 
 __Note__:Generic Template Messages 
-> allows you to add cool text buttons, to a general text message.
-
+> Allows you to add cool text buttons to a general message.
 
 ```python
 def ask_question(bot, update):
@@ -81,7 +80,7 @@ def ask_question(bot, update):
 
 ##### Sending a generic purchase message:
 
-> allows you send purchase message that clint can pay it by press "pay" button.
+> Allows you send a purchase message. Clients can pay the money requested by the message by pressing "pay" button.
 
 ```python
 
