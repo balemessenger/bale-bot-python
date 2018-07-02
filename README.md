@@ -6,7 +6,7 @@ Python SDK and samples for [Bale bot messenger](https://developers.bale.ai).
 
 ### Register for an Access Token
 
-You'll need to create your bot by [@Bot_Father](https://web.bale.ai/), Bot_Father, give you a Token.
+You'll need to create your bot by [@Bot_Father](https://web.bale.ai/), Bot_Father gives you a Token to start.
 
 ### Installation
 
