@@ -1,4 +1,4 @@
-"""Purchase message simple conversion with bot
+"""Purchase message simple conversation with bot
 """
 import asyncio
 
@@ -11,8 +11,9 @@ from balebot.updater import Updater
 # A token you give from BotFather when you create your bot set below
 updater = Updater(token="PUT YOUR TOKEN HERE",
                   loop=asyncio.get_event_loop())
-bot = updater.bot
+
 dispatcher = updater.dispatcher
+bot = updater.dispatcher.bot
 
 
 def success(response, user_data):
