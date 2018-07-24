@@ -1,8 +1,6 @@
 import asyncio
 import traceback
 
-from balebot.bot import Bot
-from balebot.connection.network import Network
 from balebot.dispatcher import Dispatcher
 from balebot.utils.logger import Logger
 from balebot.config import Config
@@ -17,39 +15,22 @@ class Updater:
             raise ValueError("`token` did't passed")
 
         self.token = token
-        self.base_url = Config.base_url
         self.timeout = Config.request_timeout
 
         self.bale_futures = []
 
-        self._incoming_queue = asyncio.Queue()
-        self._outgoing_queue = asyncio.Queue()
-
         self._loop = asyncio.get_event_loop() if not loop else loop
 
-        self._network = Network(base_url=self.base_url,
-                                token=self.token,
-                                incoming_queue=self._incoming_queue,
-                                outgoing_queue=self._outgoing_queue,
-                                loop=self._loop)
-
-        self.bot = Bot(loop=self._loop,
-                       network=self._network,
-                       bale_futures=self.bale_futures,
-                       timeout=self.timeout)
-
-        self.dispatcher = Dispatcher(bot=self.bot,
-                                     bale_futures=self.bale_futures,
-                                     timeout=self.timeout,
-                                     incoming_queue=self._incoming_queue,
-                                     outgoing_queue=self._outgoing_queue)
+        self.dispatcher = Dispatcher(loop=self._loop,
+                                     token=self.token,
+                                     bale_futures=self.bale_futures)
 
         self.running = False
 
     def run(self, stop_after=None):
 
         asyncio.ensure_future(self._run_dispatcher())
-        asyncio.ensure_future(self._network.run())
+        asyncio.ensure_future(self.dispatcher.bot.network.run())
 
         try:
             if isinstance(stop_after, int) or isinstance(stop_after, float):
@@ -64,7 +45,7 @@ class Updater:
             self.stop()
 
     def stop(self):
-        self._network.stop_network()
+        self.dispatcher.bot.network.stop_network()
         self._stop_dispatcher()
         self._loop.stop()
 
@@ -78,7 +59,7 @@ class Updater:
         self._loop.call_later(delay=delay, callback=self.stop)
 
     def network_connected(self):
-        return self._network.connected()
+        return self.dispatcher.bot.network.connected()
 
     def connect_network(self):
-        asyncio.ensure_future(self._network.connect())
+        asyncio.ensure_future(self.dispatcher.bot.network.connect())

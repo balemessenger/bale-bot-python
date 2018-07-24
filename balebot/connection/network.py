@@ -2,16 +2,16 @@ import asyncio
 import traceback
 import aiohttp
 from balebot.utils.logger import Logger
+from balebot.config import Config
 
 
 class Network:
     """ network layer main class """
 
-    def __init__(self, base_url, token, incoming_queue=None, outgoing_queue=None, loop=None):
+    def __init__(self, token, incoming_queue=None, outgoing_queue=None, loop=None):
 
         self.logger = Logger.get_logger()
-
-        self._base_url = base_url
+        self._base_url = Config.base_url
         self._token = token
         self._running = False
         self._incoming_queue = incoming_queue or asyncio.Queue()

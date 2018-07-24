@@ -1,7 +1,10 @@
+import asyncio
 import json as json_handler
 from pathlib import Path
 import time
 import traceback
+
+from balebot.bot import Bot
 
 from balebot.config import Config
 from balebot.filters import DefaultFilter, TextFilter
@@ -14,17 +17,20 @@ from balebot.utils.logger import Logger
 
 
 class Dispatcher:
-    def __init__(self, bot, bale_futures, timeout, incoming_queue=None, outgoing_queue=None):
+    def __init__(self, loop, token, bale_futures):
 
         self.logger = Logger.get_logger()
+        self.incoming_queue = asyncio.Queue()
+        self.outgoing_queue = asyncio.Queue()
+        self.timeout = Config.request_timeout
+        self.bot = Bot(loop=loop,
+                       token=token,
+                       incoming_queue=self.incoming_queue,
+                       outgoing_queue=self.outgoing_queue,
+                       bale_futures=bale_futures,
+                       timeout=self.timeout)
 
-        self.bot = bot
         self._bale_futures = bale_futures
-        self.timeout = timeout
-
-        self.incoming_queue = incoming_queue
-        self.outgoing_queue = outgoing_queue
-
         self.message_handlers = []
         self.error_handlers = []
         self.read_handler_object = None

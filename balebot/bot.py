@@ -16,12 +16,13 @@ from balebot.utils.util_functions import get_file_crc32, get_file_size, get_file
 
 
 class Bot:
-    def __init__(self, loop, network, bale_futures, timeout):
+    def __init__(self, loop, token, incoming_queue, outgoing_queue, bale_futures, timeout):
         self._loop = loop
-        if isinstance(network, Network):
-            self._network = network
+        self.network = Network(token=token,
+                               incoming_queue=incoming_queue,
+                               outgoing_queue=outgoing_queue,
+                               loop=loop)
 
-        self._network = network
         self._bale_futures = bale_futures
         self.timeout = timeout
 
@@ -41,7 +42,7 @@ class Bot:
             self._bale_futures.remove(bale_future)
 
     def send_request(self, request_data):
-        self._network.send(request_data)
+        self.network.send(request_data)
 
     def reply(self, update, message, success_callback=None, failure_callback=None, **kwargs):
         if isinstance(update, FatSeqUpdate) and update.is_message_update():
@@ -121,7 +122,7 @@ class Bot:
     def get_last_seq(self, success_callback=None, failure_callback=None, **kwargs):
         request_body = GetLastSequence()
         request = Request(service=ServiceType.SequenceUpdate, body=request_body)
-        self.set_future(request.id, request_body, success_callback, failure_callback, ** kwargs)
+        self.set_future(request.id, request_body, success_callback, failure_callback, **kwargs)
         self.send_request(request.get_json_str())
         return request
 
