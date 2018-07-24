@@ -19,6 +19,4 @@ from balebot.models.base_models.response import Response
 from balebot.models.base_models.response_body import ResponseBody
 from balebot.models.base_models.user import User
 from balebot.models.base_models.user_peer import UserPeer
-from balebot.models.base_models.contact import Contact
-from balebot.models.base_models.location import Location
 from balebot.models.base_models.raw_json import RawJson

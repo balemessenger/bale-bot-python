@@ -1,26 +1,31 @@
 import json as json_handler
 
-from balebot.models.base_models.raw_json import RawJson
-from balebot.models.constants.errors import Error
 from balebot.models.constants.raw_json_type import RawJsonType
+from balebot.models.base_models.raw_json import RawJson
+from balebot.models.messages.base_message import BaseMessage
+from balebot.models.constants.errors import Error
+from balebot.models.constants.message_type import MessageType
 
 
-class Location(RawJson):
+class LocationMessage(RawJson, BaseMessage):
     def __init__(self, latitude, longitude):
         self.latitude = float(latitude)
         self.longitude = float(longitude)
 
     def get_json_object(self):
-        data = {
-            "dataType": RawJsonType.location,
-            "data": {
-                RawJsonType.location: {
-                    "latitude": self.latitude,
-                    "longitude": self.longitude
-                }
-            }
-        }
 
+        data = {
+            "$type": MessageType.json_message,
+            "rawJson": json_handler.dumps({
+                "dataType": RawJsonType.location,
+                "data": {
+                    RawJsonType.location: {
+                        "latitude": self.latitude,
+                        "longitude": self.longitude
+                    }
+                }
+            })
+        }
         return data
 
     def get_json_str(self):
