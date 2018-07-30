@@ -150,17 +150,19 @@ class Bot:
 
         def file_download_url_success(result, user_data):
             async def get_data(download_url):
-                async with aiohttp.ClientSession() as session:
-                    async with session.get(download_url) as download_response:
-                        status = download_response.status
+                try:
+                    async with aiohttp.ClientSession() as session:
+                        async with session.get(download_url) as download_response:
+                            status = download_response.status
 
-                        if status == 200:
-                            byte_stream = await download_response.content.read()
-                            future.set_user_data(byte_stream=byte_stream)
-                            future.resolve(response=None)
-                        else:
-                            future.reject(response=None)
-
+                            if status == 200:
+                                byte_stream = await download_response.content.read()
+                                future.set_user_data(byte_stream=byte_stream)
+                                future.resolve(response=None)
+                            else:
+                                future.reject(response=None)
+                except Exception as e:
+                    future.reject(response=None)
             url = result.body.url
             asyncio.ensure_future(get_data(url))
 
@@ -192,17 +194,18 @@ class Bot:
 
             data = buffer
             headers = {'filesize': str(file_size)}
-
             async def upload_data():
-                async with aiohttp.ClientSession() as session:
-                    async with session.put(url, data=data, headers=headers) as upload_response:
-                        status = upload_response.status
-                        if status == 200:
-                            future.set_user_data(file_id=file_id, user_id=user_id, url=url, dup=dup)
-                            future.resolve(response=None)
-                        else:
-                            future.reject(response=None)
-
+                try:
+                    async with aiohttp.ClientSession() as session:
+                        async with session.put(url, data=data, headers=headers) as upload_response:
+                            status = upload_response.status
+                            if status == 200:
+                                future.set_user_data(file_id=file_id, user_id=user_id, url=url, dup=dup)
+                                future.resolve(response=None)
+                            else:
+                                future.reject(response=None)
+                except Exception as e:
+                    future.reject(response=None)
             asyncio.ensure_future(upload_data())
 
         def file_upload_url_failure(result, user_data):
