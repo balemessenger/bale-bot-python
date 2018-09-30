@@ -1,7 +1,9 @@
 import functools
 import asyncio
 import aiohttp
-
+import io
+import sys
+from PIL import Image
 from balebot.models.base_models import response
 from balebot.connection.network import Network
 from balebot.bale_future import BaleFuture
@@ -11,8 +13,8 @@ from balebot.models.base_models import BotQuotedMessage, FatSeqUpdate, GroupPeer
 from balebot.models.client_requests.sequence.get_last_sequence import GetLastSequence
 from balebot.models.constants.request_to_response_mapper import RequestToResponseMapper
 from balebot.models.constants.service_type import ServiceType
-from balebot.models.messages import BaseMessage, TextMessage
-from balebot.utils.util_functions import get_file_crc32, get_file_size, get_file_buffer
+from balebot.models.messages import BaseMessage, TextMessage, PhotoMessage, DocumentMessage
+from balebot.utils.util_functions import get_file_crc32, get_file_size, get_file_buffer, get_image_thumbnails
 
 
 class Bot:
@@ -49,30 +51,30 @@ class Bot:
             message_id = update.body.random_id
             user_peer = update.get_effective_user()
             if isinstance(message, BaseMessage):
-                self.send_message(message, user_peer,
-                                  BotQuotedMessage(message_id, user_peer),
-                                  success_callback=success_callback,
-                                  failure_callback=failure_callback,
-                                  **kwargs)
+                return self.send_message(message, user_peer,
+                                         BotQuotedMessage(message_id, user_peer),
+                                         success_callback=success_callback,
+                                         failure_callback=failure_callback,
+                                         **kwargs)
             else:
-                self.send_message(TextMessage(message), user_peer,
-                                  BotQuotedMessage(message_id, user_peer),
-                                  success_callback=success_callback,
-                                  failure_callback=failure_callback,
-                                  **kwargs)
+                return self.send_message(TextMessage(message), user_peer,
+                                         BotQuotedMessage(message_id, user_peer),
+                                         success_callback=success_callback,
+                                         failure_callback=failure_callback,
+                                         **kwargs)
 
     def respond(self, update, message, success_callback=None, failure_callback=None, **kwargs):
         user_peer = update.get_effective_user()
         if isinstance(message, BaseMessage):
-            self.send_message(message, user_peer,
-                              success_callback=success_callback,
-                              failure_callback=failure_callback,
-                              **kwargs)
+            return self.send_message(message, user_peer,
+                                     success_callback=success_callback,
+                                     failure_callback=failure_callback,
+                                     **kwargs)
         else:
-            self.send_message(TextMessage(message), user_peer,
-                              success_callback=success_callback,
-                              failure_callback=failure_callback,
-                              **kwargs)
+            return self.send_message(TextMessage(message), user_peer,
+                                     success_callback=success_callback,
+                                     failure_callback=failure_callback,
+                                     **kwargs)
 
     # messaging
     def send_message(self, message, peer, quoted_message=None, random_id=None, success_callback=None,
@@ -80,6 +82,16 @@ class Bot:
         receiver = peer
         request_body = SendMessage(message=message, receiver_peer=receiver,
                                    quoted_message=quoted_message, random_id=random_id)
+        request = Request(service=ServiceType.Messaging, body=request_body)
+        self.set_future(request.id, request_body, success_callback, failure_callback, **kwargs)
+        self.send_request(request.get_json_str())
+        return request
+
+    def edit_message(self, message, user_peer, random_id, success_callback=None, failure_callback=None,
+                     **kwargs):
+        text_message = message
+        receiver = user_peer
+        request_body = EditMessage(updated_message=text_message, peer=receiver, random_id=random_id)
         request = Request(service=ServiceType.Messaging, body=request_body)
         self.set_future(request.id, request_body, success_callback, failure_callback, **kwargs)
         self.send_request(request.get_json_str())
@@ -194,6 +206,7 @@ class Bot:
 
             data = buffer
             headers = {'filesize': str(file_size)}
+
             async def upload_data():
                 try:
                     async with aiohttp.ClientSession() as session:
@@ -214,3 +227,40 @@ class Bot:
         self.get_file_upload_url(size=file_size, crc=file_crc32, file_type=file_type,
                                  success_callback=file_upload_url_success,
                                  failure_callback=file_upload_url_failure)
+
+    def send_photo(self, user_peer, image, caption_text="", name="", file_storage_version=1, mime_type="image/jpeg",
+                   success_callback=None, failure_callback=None, **kwargs):
+        image_buffer = get_file_buffer(file=image)
+        file_size = sys.getsizeof(image_buffer)
+        im = Image.open(io.BytesIO(image_buffer))
+        width, height = im.size
+        thumb = get_image_thumbnails(im)
+
+        def success_upload_image(user_data, server_response):
+            file_id = str(server_response.get("file_id", None))
+            access_hash = str(server_response.get("user_id", None))
+            photo_message = PhotoMessage(file_id=file_id, access_hash=access_hash, name=name, file_size=file_size,
+                                         mime_type=mime_type, file_storage_version=file_storage_version, width=width,
+                                         height=height, caption_text=TextMessage(text=caption_text), thumb=thumb)
+            self.send_message(message=photo_message, peer=user_peer, success_callback=success_callback,
+                              failure_callback=failure_callback, kwargs=kwargs)
+
+        self.upload_file(file=image, file_type="file", success_callback=success_upload_image,
+                         failure_callback=failure_callback)
+
+    def send_document(self, update, doc_file, mime_type, caption_text="", file_type="file", name="",
+                      file_storage_version=1, success_callback=None, failure_callback=None, **kwargs):
+        file_size = sys.getsizeof(doc_file)
+
+        def success_upload_document(user_data, server_response):
+            file_id = str(server_response.get("file_id", None))
+            access_hash = str(server_response.get("user_id", None))
+            document_message = DocumentMessage(file_id=file_id, access_hash=access_hash, name=name,
+                                               file_size=file_size, mime_type=mime_type,
+                                               caption_text=TextMessage(text=caption_text),
+                                               file_storage_version=file_storage_version)
+            self.respond(update=update, message=document_message, success_callback=success_callback,
+                         failure_callback=failure_callback, kwargs=kwargs)
+
+        self.upload_file(file=doc_file, file_type=file_type, success_callback=success_upload_document,
+                         failure_callback=failure_callback)
