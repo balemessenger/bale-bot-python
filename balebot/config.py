@@ -15,5 +15,6 @@ class Config:
     monitoring_hash = os.environ.get('MONITORING_HASH', "SADJSDSDas4d2asf41f2a2faasd45sas")
     real_time_fetch_updates = os.environ.get('REAL_TIME_FETCH_UPDATES', True)
     continue_last_processed_seq = os.environ.get('CONTINUE_LAST_PROCESSED_SEQ', False)
-    timeInterval = int(os.environ.get('TIME_INTERVAL', 1))# unit for time interval is second)
+    timeInterval = int(os.environ.get('TIME_INTERVAL', 1))  # unit for time interval is second)
     updates_number = int(os.environ.get('UPDATES_NUMBER', 3))
+    heartbeat = int(os.environ.get("HEARTBEAT", 30))

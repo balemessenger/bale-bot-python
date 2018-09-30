@@ -12,6 +12,8 @@ class RequestToResponseMapper:
         "InviteUser": ("balebot.models.server_responses.bot_success_response", "BotSuccess"),
 
         "SendMessage": ("balebot.models.server_responses.messaging.message_sent", "MessageSent"),
+        "EditMessage": (
+            "balebot.models.server_responses.messaging.message_edited", "MessageEdited"),
 
         "GetDifference": ("balebot.models.server_responses.sequence.difference_update", "DifferenceUpdate"),
         "GetLastSequence": ("balebot.models.server_responses.sequence.get_last_seq_response", "GetLastSeqResponse"),

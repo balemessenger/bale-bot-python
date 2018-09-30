@@ -7,6 +7,7 @@ class RequestType:
     invite_user = "InviteUser"
 
     send_message = "SendMessage"
+    edit_message = "EditMessage"
 
     get_difference = "GetDifference"
     get_last_seq = "GetLastSeq"
