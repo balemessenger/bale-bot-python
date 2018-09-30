@@ -1,22 +1,14 @@
 # Changelog
 [![Build Status](https://avatars1.githubusercontent.com/u/35299314?s=200&v=4)](https://github.com/balemessenger)
 
-## [Unreleased]
  
-## [1.2.0] - 2018-06-22
+## [1.2.8] - 2018-09-30
 ### Added
-- Support for sending location message.
-- Support for sending contact message.
-- location conversation sample.
-- contact conversation sample.
+- Send photo message easier than the past.
+- Send Document message easier than the past.
 
 
-### Changed
-- changes in SDK architecture.
-- changes in updater, dispatcher, bot, networks modules.
-- changes in samples.
+### fixed
+- network connection
 
 
-### Removed
-- Location from base models.
-- Contact from base models.

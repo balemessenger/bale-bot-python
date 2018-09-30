@@ -11,7 +11,7 @@ updater = Updater(token="PUT YOUR TOKEN HERE",
                   loop=asyncio.get_event_loop())
 # Define dispatcher
 dispatcher = updater.dispatcher
-bot = updater.dispatcher.bot
+
 
 # Both of success and failure functions are optional
 def success(response, user_data):

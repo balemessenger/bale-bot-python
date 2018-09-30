@@ -8,11 +8,10 @@ from balebot.models.messages import *
 from balebot.updater import Updater
 import datetime
 
-# A token you give from BotFather when you create your bot set below
+# Bale Bot Authorization Token
 updater = Updater(token="PUT YOUR TOKEN HERE",
                   loop=asyncio.get_event_loop())
 dispatcher = updater.dispatcher
-bot = updater.dispatcher.bot
 
 
 def success(response, user_data):
