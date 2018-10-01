@@ -17,5 +17,4 @@ class BotApiQuotedMessage:
         self.public_group_id = json_dict.get("publicGroupId", None)
         self.sender_id = json_dict.get("senderId", None)
         self.messageDate = json_dict.get("messageDate", None)
-        self.message = message_factory.MessageFactory.create_message(json_dict.get("message", None)) \
-            if json_dict.get("message", None) else None
+        self.message = message_factory.MessageFactory.create_message(json_dict.get("message"))
