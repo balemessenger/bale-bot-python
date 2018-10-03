@@ -26,7 +26,7 @@ class QuotedMessageHandler(Handler):
             return any(message_filter.match(message) for message_filter in self.filters)
 
     def handle_update(self, dispatcher, update):
-        return self.callback(dispatcher.bot, update)
+        return self.callback(bot=dispatcher.bot, update=update)
 
     def is_default_handler(self):
         for message_filter in self.filters:

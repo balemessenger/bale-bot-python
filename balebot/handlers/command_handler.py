@@ -33,7 +33,7 @@ class CommandHandler(Handler):
         return False
 
     def handle_update(self, dispatcher, update):
-        return self.callback(dispatcher.bot, update)
+        return self.callback(bot=dispatcher.bot, update=update)
 
     def is_default_handler(self):
         return False
