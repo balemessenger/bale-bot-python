@@ -3,6 +3,7 @@ from balebot.models.messages.banking import bank_message
 from balebot.models.messages.banking import purchase_message
 from balebot.models.messages import document_message
 from balebot.models.messages import location_message
+from balebot.models.messages import contact_message
 from balebot.models.messages import photo_message
 from balebot.models.messages import sticker_message
 from balebot.models.messages.template import template_message
@@ -38,6 +39,9 @@ class MessageFactory:
 
             if json_message.JsonMessage.is_raw_location_message(json_dict):
                 return location_message.LocationMessage.load_from_json(json_dict)
+
+            elif json_message.JsonMessage.is_raw_contact_message(json_dict):
+                return contact_message.ContactMessage.load_from_json(json_dict)
 
             return json_message.JsonMessage.load_from_json(json_dict)
 
