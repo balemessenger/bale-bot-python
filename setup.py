@@ -11,7 +11,7 @@ requires = [
         'pillow==5.2.0',
         ]
 
-with open('CHANGELOG.md', mode='rt', encoding='utf-8') as f:
+with open('README.md', mode='rt', encoding='utf-8') as f:
     long_description = f.read()
 
 about = {}
