@@ -1,5 +1,7 @@
 import functools
 import asyncio
+import os
+
 import aiohttp
 import io
 import sys
@@ -250,7 +252,7 @@ class Bot:
 
     def send_document(self, update, doc_file, mime_type, caption_text="", file_type="file", name="",
                       file_storage_version=1, success_callback=None, failure_callback=None, **kwargs):
-        file_size = sys.getsizeof(doc_file)
+        file_size = os.path.getsize(doc_file)
 
         def success_upload_document(user_data, server_response):
             file_id = str(server_response.get("file_id", None))
