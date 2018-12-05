@@ -25,6 +25,7 @@ class Network:
         self._listener_task = None
         self._sender_task = None
         self._heartbeat = Config.heartbeat
+        self._receive_timeout = Config.receive_timeout
 
     @backoff.on_predicate(backoff.fibo)
     async def connect(self):
@@ -32,24 +33,24 @@ class Network:
 
             try:
                 self._session = aiohttp.ClientSession(loop=self._loop)
-                self._ws = await self._session.ws_connect(self.construct_url(),heartbeat=self._heartbeat,headers={"source":"python3.5"})
-                self.logger.debug('connect: {}'.format(self.construct_url()))
+                self._ws = await self._session.ws_connect(self.construct_url(),heartbeat=self._heartbeat,receive_timeout=self._receive_timeout,headers={"source":"python3.5"})
+                self.logger.warning('connect success: {}'.format(self.construct_url()))
             except Exception as e:
                 await self.disconnect()
                 self.logger.error('connect error: {}'.format(e),
-                                  extra={"tag": "err", "url": self.construct_url(), "error_type": type(e)})
+                                  extra={"tag": "err","type": "connection", "url": self.construct_url(), "error_type": type(e)})
                 traceback.print_exc()
 
         elif self._ws.closed:
             try:
                 if self._session.closed:
                     self._session = aiohttp.ClientSession(loop=self._loop)
-                self._ws = await self._session.ws_connect(self.construct_url(),heartbeat=self._heartbeat,headers={"source":"python3.5"})
-                self.logger.debug('reconnect: {}'.format(self.construct_url()))
+                self._ws = await self._session.ws_connect(self.construct_url(),heartbeat=self._heartbeat,receive_timeout=self._receive_timeout,headers={"source":"python3.5"})
+                self.logger.warning('reconnect success: {}'.format(self.construct_url()))
             except Exception as e:
                 await self.disconnect()
                 self.logger.error('reconnect error: {}'.format(e),
-                                  extra={"tag": "err", "url": self.construct_url(), "error_type": type(e)})
+                                  extra={"tag": "err", "type": "connection", "url": self.construct_url(), "error_type": type(e)})
                 traceback.print_exc()
 
         return self._ws
