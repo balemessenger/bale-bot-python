@@ -1,11 +1,10 @@
 import asyncio
 import json as json_handler
-from pathlib import Path
 import time
 import traceback
+from pathlib import Path
 
 from balebot.bot import Bot
-
 from balebot.config import Config
 from balebot.filters import DefaultFilter, TextFilter
 from balebot.handlers import Handler, CommandHandler, MessageHandler
@@ -23,6 +22,7 @@ class Dispatcher:
         self.incoming_queue = asyncio.Queue()
         self.outgoing_queue = asyncio.Queue()
         self.timeout = Config.request_timeout
+        self.token = token
         self.bot = Bot(loop=loop,
                        token=token,
                        incoming_queue=self.incoming_queue,
@@ -80,7 +80,9 @@ class Dispatcher:
         self.running = False
 
     def process_update(self, update_json):
-
+        if update_json.get("body").get("peer") and update_json.get("body").get("peer").get("$type") == "Group" \
+                and Config.group_shield == 1:
+            return
         update = server_update_factory.ServerUpdateFactory.create_update(update_json)
 
         if isinstance(update, Response):

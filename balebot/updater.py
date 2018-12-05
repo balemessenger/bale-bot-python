@@ -1,9 +1,17 @@
 import asyncio
+import pickle
 import traceback
+from collections import namedtuple
 
+import redis
+
+from balebot.config import Config
 from balebot.dispatcher import Dispatcher
 from balebot.utils.logger import Logger
-from balebot.config import Config
+
+redis_db = redis.StrictRedis(host=Config.redis_host, port=Config.redis_port, db=Config.redis_db) \
+    if Config.state_holder else None
+BotState = namedtuple('BotState', ['conversation_next_step_handlers', 'conversation_data'])
 
 
 class Updater:
@@ -28,6 +36,12 @@ class Updater:
         self.running = False
 
     def run(self, stop_after=None):
+        if Config.state_holder:
+            bot_previous_state = redis_db.get(self.token)
+            bot_previous_state = pickle.loads(bot_previous_state) if bot_previous_state else None
+            self.dispatcher.conversation_next_step_handlers, self.dispatcher.conversation_data = \
+                (bot_previous_state.conversation_next_step_handlers, bot_previous_state.conversation_data) \
+                if bot_previous_state else ({}, {})
 
         asyncio.ensure_future(self._run_dispatcher())
         asyncio.ensure_future(self.dispatcher.bot.network.run())
@@ -45,6 +59,9 @@ class Updater:
             self.stop()
 
     def stop(self):
+        redis_db.set(self.token, pickle.dumps(
+            BotState(conversation_next_step_handlers=self.dispatcher.conversation_next_step_handlers,
+                     conversation_data=self.dispatcher.conversation_data)))
         self.dispatcher.bot.network.stop_network()
         self._stop_dispatcher()
         self._loop.stop()
