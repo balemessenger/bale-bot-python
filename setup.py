@@ -4,11 +4,11 @@ this_directory = path.abspath(path.dirname(__file__))
 with open(path.join(this_directory, 'CHANGELOG.md')) as f:
     long_description = f.read()
 setuptools.setup(name='balebot',
-                 version='1.2.8',
+                 version='1.3.9',
                  description='python framework for Bale messenger Bot API',
                  author='bale',
                  author_email='balebot@elenoon.ir',
-                 license='GNU',
+                 license='Apache2',
                  long_description=long_description,
                  long_description_content_type='text/markdown',
                  url='https://github.com/balemessenger/bale-bot-python',
