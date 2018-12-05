@@ -3,6 +3,7 @@ import os
 
 
 class Config:
+    receive_timeout = int(os.environ.get("SESSION_TIMEOUT",60))
     base_url = os.environ.get('BASE_URL', "wss://api.bale.ai/v1/bots/")
     request_timeout = int(os.environ.get('REQUEST_TIMEOUT', 5))
     # 0:print to output        1:use graylog       2:both 0 and 1
