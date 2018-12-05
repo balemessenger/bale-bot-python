@@ -2,6 +2,8 @@ from balebot.models.constants.message_type import MessageType
 from balebot.models.messages.banking import bank_message
 from balebot.models.messages.banking import purchase_message
 from balebot.models.messages import document_message
+from balebot.models.messages import location_message
+from balebot.models.messages import contact_message
 from balebot.models.messages import photo_message
 from balebot.models.messages import sticker_message
 from balebot.models.messages.template import template_message
@@ -16,7 +18,7 @@ from balebot.models.messages import template_response_message
 class MessageFactory:
     @staticmethod
     def create_message(json_dict):
-        message_type = json_dict.get("$type", None)
+        message_type = json_dict.get("$type")
 
         if message_type == MessageType.text_message:
             return text_message.TextMessage.load_from_json(json_dict)
@@ -34,6 +36,13 @@ class MessageFactory:
             return sticker_message.StickerMessage.load_from_json(json_dict)
 
         elif message_type == MessageType.json_message:
+
+            if json_message.JsonMessage.is_raw_location_message(json_dict):
+                return location_message.LocationMessage.load_from_json(json_dict)
+
+            elif json_message.JsonMessage.is_raw_contact_message(json_dict):
+                return contact_message.ContactMessage.load_from_json(json_dict)
+
             return json_message.JsonMessage.load_from_json(json_dict)
 
         elif message_type == MessageType.template_response_message:

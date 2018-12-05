@@ -2,10 +2,14 @@ import json as json_handler
 
 
 class TemplateMessageButton:
-    def __init__(self, text, value, action):
+    # text: str
+    # value: str
+    # action: int
+
+    def __init__(self, text, value=None, action=None):
         self.text = str(text)
-        self.value = str(value)
-        self.action = int(action)
+        self.value = str(value or text)
+        self.action = int(action or 0)
 
     def get_json_object(self):
         data = {

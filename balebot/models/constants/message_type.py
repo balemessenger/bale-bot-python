@@ -9,3 +9,5 @@ class MessageType:
     json_message = 'Json'
     document_message = 'Document'
     template_response_message = 'TemplateMessageResponse'
+    location_message = 'location'
+    contact_message = 'contact'

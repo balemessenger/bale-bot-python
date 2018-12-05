@@ -1,4 +1,5 @@
 import asyncio
+import functools
 import traceback
 import aiohttp
 import backoff
@@ -26,13 +27,14 @@ class Network:
         self._sender_task = None
         self._heartbeat = Config.heartbeat
 
-    @backoff.on_predicate(backoff.fibo)
+    @backoff.on_predicate(functools.partial(backoff.fibo, max_value=35))
     async def connect(self):
         if self._ws is None:
 
             try:
                 self._session = aiohttp.ClientSession(loop=self._loop)
-                self._ws = await self._session.ws_connect(self.construct_url(),heartbeat=self._heartbeat,headers={"source":"python3.5"})
+                self._ws = await self._session.ws_connect(self.construct_url(), heartbeat=self._heartbeat,
+                                                          headers={"source": "python3.5"})
                 self.logger.debug('connect: {}'.format(self.construct_url()))
             except Exception as e:
                 await self.disconnect()
@@ -44,7 +46,8 @@ class Network:
             try:
                 if self._session.closed:
                     self._session = aiohttp.ClientSession(loop=self._loop)
-                self._ws = await self._session.ws_connect(self.construct_url(),heartbeat=self._heartbeat,headers={"source":"python3.5"})
+                self._ws = await self._session.ws_connect(self.construct_url(), heartbeat=self._heartbeat,
+                                                          headers={"source": "python3.5"})
                 self.logger.debug('reconnect: {}'.format(self.construct_url()))
             except Exception as e:
                 await self.disconnect()

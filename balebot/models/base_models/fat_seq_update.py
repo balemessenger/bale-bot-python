@@ -20,6 +20,7 @@ class FatSeqUpdate:
         else:
             raise ValueError(Error.unacceptable_json)
 
+        self.json_dict = json_dict
         self.seq = json_dict.get("seq", None)
 
         self.body = update_body_factory.UpdateBodyFactory.create_update_body(json_dict.get("body", None))
