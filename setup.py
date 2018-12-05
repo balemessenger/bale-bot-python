@@ -12,9 +12,6 @@ requires = [
         'pillow==5.2.0',
         ]
 
-with open('README.md', mode='rt', encoding='utf-8') as f:
-    long_description = f.read()
-
 about = {}
 with open(os.path.join(here, 'balebot', '__version__.py'), mode='rt', encoding='utf-8') as f:
     exec(f.read(), about)
@@ -26,7 +23,7 @@ setup(
         author=about['__author__'],
         author_email=about['__author_email__'],
         license=about['__license__'],
-        long_description=long_description,
+        long_description="\n\n".join([open("README.md").read(), open("CHANGELOG.md").read()]),
         long_description_content_type='text/markdown',
         url=about['__url__'],
         install_requires=requires,
