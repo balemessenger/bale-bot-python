@@ -19,3 +19,4 @@ class Config:
     timeInterval = int(os.environ.get('TIME_INTERVAL', 1))  # unit for time interval is second)
     updates_number = int(os.environ.get('UPDATES_NUMBER', 3))
     heartbeat = int(os.environ.get("HEARTBEAT", 30))
+    group_shield = int(os.environ.get("Group_SHIELD", 1))
