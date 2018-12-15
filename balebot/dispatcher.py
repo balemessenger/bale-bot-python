@@ -80,6 +80,9 @@ class Dispatcher:
         self.running = False
 
     def process_update(self, update_json):
+        if update_json.get("body").get("peer") and update_json.get("body").get("peer").get("$type") == "Group" \
+                and Config.group_shield == 1:
+            return
 
         update = server_update_factory.ServerUpdateFactory.create_update(update_json)
 
