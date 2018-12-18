@@ -53,4 +53,5 @@ class Response:
         return self._id
 
     def get_response(self):
-        return self.body
+        return self.body.get_json_object()
+

@@ -17,3 +17,9 @@ class BotError(ResponseBody):
         self.tag = json_dict.get("tag", None)
         self.data = json_dict.get("data", None)
         self.retry_in = json_dict.get("retryIn", None)
+
+    def get_json_object(self):
+        return {"code": self.code,
+                "tag": self.tag,
+                "data": self.data,
+                "retry_in": self.retry_in}
