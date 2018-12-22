@@ -250,7 +250,7 @@ class Bot:
         self.upload_file(file=image, file_type="file", success_callback=success_upload_image,
                          failure_callback=failure_callback)
 
-    def send_document(self, update, doc_file, mime_type, caption_text="", file_type="file", name="",
+    def send_document(self, user_peer, doc_file, mime_type, caption_text="", file_type="file", name="",
                       file_storage_version=1, success_callback=None, failure_callback=None, **kwargs):
         file_size = os.path.getsize(doc_file)
 
@@ -261,8 +261,8 @@ class Bot:
                                                file_size=file_size, mime_type=mime_type,
                                                caption_text=TextMessage(text=caption_text),
                                                file_storage_version=file_storage_version)
-            self.respond(update=update, message=document_message, success_callback=success_callback,
-                         failure_callback=failure_callback, kwargs=kwargs)
+            self.send_message(message=document_message, peer=user_peer, success_callback=success_callback,
+                              failure_callback=failure_callback, kwargs=kwargs)
 
         self.upload_file(file=doc_file, file_type=file_type, success_callback=success_upload_document,
                          failure_callback=failure_callback)
