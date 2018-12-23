@@ -7,6 +7,8 @@ from balebot.models.messages.template.template_message_button import TemplateMes
 from balebot.models.messages.template_response_message import TemplateResponseMessage
 from balebot.models.messages.base_message import BaseMessage
 from balebot.models.messages.json_message import JsonMessage
+from balebot.models.messages.location_message import LocationMessage
+from balebot.models.messages.contact_message import ContactMessage
 from balebot.models.messages.text_message import TextMessage
 from balebot.models.messages.unsupported_message import UnsupportedMessage
 from balebot.models.messages.photo_message import PhotoMessage

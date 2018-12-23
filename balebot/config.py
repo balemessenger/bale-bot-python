@@ -19,3 +19,8 @@ class Config:
     timeInterval = int(os.environ.get('TIME_INTERVAL', 1))  # unit for time interval is second)
     updates_number = int(os.environ.get('UPDATES_NUMBER', 3))
     heartbeat = int(os.environ.get("HEARTBEAT", 30))
+    state_holder = int(os.getenv('STATE_HOLDER', 0))
+    redis_host = os.getenv('REDIS_HOST', "localhost")
+    redis_port = int(os.getenv('REDIS_PORT', 6379))
+    redis_db = os.getenv('REDIS_DB', 0)
+    group_shield = int(os.getenv('GROUP_SHIELD', 1))

@@ -4,9 +4,9 @@ from balebot.handlers.handler import Handler
 from balebot.models.base_models.fat_seq_update import FatSeqUpdate
 
 
-class MessageHandler(Handler):
+class QuotedMessageHandler(Handler):
     def __init__(self, filters, callback):
-        super(MessageHandler, self).__init__(callback=callback)
+        super(QuotedMessageHandler, self).__init__(callback=callback)
 
         if not filters:
             filters = DefaultFilter()
@@ -20,8 +20,8 @@ class MessageHandler(Handler):
             raise ValueError("filters don't have acceptable format.")
 
     def check_update(self, update):
-        if isinstance(update, FatSeqUpdate) and update.is_message_update():
-            message = update.get_effective_message()
+        if isinstance(update, FatSeqUpdate) and update.is_message_update() and update.body.quoted_message:
+            message = update.body.quoted_message.message
 
             return any(message_filter.match(message) for message_filter in self.filters)
 

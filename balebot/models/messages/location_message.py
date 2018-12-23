@@ -40,6 +40,7 @@ class LocationMessage(RawJson, BaseMessage):
         else:
             raise ValueError(Error.unacceptable_json)
 
+        json_dict = json_handler.loads(json_dict.get('rawJson'))
         data = json_dict.get('data', None)
         location = data.get(RawJsonType.location, None)
         latitude = location.get('latitude', None)

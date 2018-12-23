@@ -48,4 +48,18 @@ class TemplateMessage(BaseMessage):
 
     @classmethod
     def load_from_json(cls, json):
-        pass
+        if isinstance(json, dict):
+            json_dict = json
+        elif isinstance(json, str):
+            json_dict = json_handler.loads(json)
+        else:
+            raise ValueError(Error.unacceptable_json)
+
+        from balebot.models.factories import message_factory
+        general_message = message_factory.MessageFactory.create_message(json_dict.get("generalMessage"))
+        bt_list = json_dict.get('btnList')
+        btn_list = [TemplateMessageButton(btn['text'], btn['value'], 0) for btn in bt_list]
+        if general_message is None or bt_list is None:
+            raise ValueError(Error.none_or_invalid_attribute)
+
+        return cls(general_message=general_message, btn_list=btn_list)
