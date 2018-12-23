@@ -51,3 +51,6 @@ class Response:
     @property
     def id(self):
         return self._id
+
+    def get_response(self):
+        return self.body_json
