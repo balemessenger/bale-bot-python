@@ -1,6 +1,18 @@
 # Changelog
 [![Build Status](https://avatars1.githubusercontent.com/u/35299314?s=200&v=4)](https://github.com/balemessenger)
 
+## [1.4.10] - 2018-12-23
+### Added
+- Quoted Message Handler
+- default action and value for template_message_button
+- group_shield to config for preventing bot to handle updates from group_peer
+- saving bot state_machine to redis db through state_holder and redis configs in config
+- template_message, location_message and contact_message load_from_json
+
+### fixed
+- bot.send_document
+
+
 ## [1.3.9] - 2018-12-05
 ### Added
 - get_response method in response class
