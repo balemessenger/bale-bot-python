@@ -12,7 +12,7 @@ class TemplateResponseFilter(Filter):
             self.keywords.append(keywords)
 
         self.pattern = ('^' + str(exact) + '$') if exact else pattern
-        self.validator = validator if isinstance(validator, function) else None
+        self.validator = validator if callable(validator) else None
         self.include_commands = include_commands
 
     def match(self, message):
