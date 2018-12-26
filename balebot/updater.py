@@ -59,9 +59,10 @@ class Updater:
             self.stop()
 
     def stop(self):
-        redis_db.set(self.token, pickle.dumps(
-            BotState(conversation_next_step_handlers=self.dispatcher.conversation_next_step_handlers,
-                     conversation_data=self.dispatcher.conversation_data)))
+        if Config.state_holder:
+            redis_db.set(self.token, pickle.dumps(
+                BotState(conversation_next_step_handlers=self.dispatcher.conversation_next_step_handlers,
+                         conversation_data=self.dispatcher.conversation_data)))
         self.dispatcher.bot.network.stop_network()
         self._stop_dispatcher()
         self._loop.stop()
