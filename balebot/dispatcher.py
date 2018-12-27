@@ -16,7 +16,7 @@ from balebot.utils.logger import Logger
 
 
 class Dispatcher:
-    def __init__(self, loop, token, bale_futures):
+    def __init__(self, loop, token, base_url, bale_futures):
 
         self.logger = Logger.get_logger()
         self.incoming_queue = asyncio.Queue()
@@ -24,7 +24,7 @@ class Dispatcher:
         self.timeout = Config.request_timeout
         self.token = token
         self.bot = Bot(loop=loop,
-                       token=token,
+                       token=token, base_url=base_url,
                        incoming_queue=self.incoming_queue,
                        outgoing_queue=self.outgoing_queue,
                        bale_futures=bale_futures,

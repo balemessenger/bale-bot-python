@@ -20,9 +20,9 @@ from balebot.utils.util_functions import get_file_crc32, get_file_size, get_file
 
 
 class Bot:
-    def __init__(self, loop, token, incoming_queue, outgoing_queue, bale_futures, timeout):
+    def __init__(self, loop, token, base_url, incoming_queue, outgoing_queue, bale_futures, timeout):
         self._loop = loop
-        self.network = Network(token=token,
+        self.network = Network(token=token, base_url=base_url,
                                incoming_queue=incoming_queue,
                                outgoing_queue=outgoing_queue,
                                loop=loop)
@@ -177,6 +177,7 @@ class Bot:
                                 future.reject(response=None)
                 except Exception as e:
                     future.reject(response=None)
+
             url = result.body.url
             asyncio.ensure_future(get_data(url))
 
@@ -221,6 +222,7 @@ class Bot:
                                 future.reject(response=None)
                 except Exception as e:
                     future.reject(response=None)
+
             asyncio.ensure_future(upload_data())
 
         def file_upload_url_failure(result, user_data):

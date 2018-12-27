@@ -25,7 +25,7 @@ def echo(bot, update):
 
 def main():
     # Bale Bot Authorization Token
-    updater = Updater("TOKEN", loop=asyncio.get_event_loop())
+    updater = Updater("TOKEN")
 
     # Define dispatcher
     dp = updater.dispatcher
