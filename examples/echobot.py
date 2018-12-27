@@ -3,8 +3,6 @@
 
 """Simple Bot to Reply to Bale messages."""
 
-import asyncio
-
 from balebot.filters import DefaultFilter
 from balebot.handlers import CommandHandler, MessageHandler
 from balebot.updater import Updater

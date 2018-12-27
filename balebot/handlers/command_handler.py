@@ -20,7 +20,7 @@ class CommandHandler(Handler):
             if isinstance(message, TextMessage):
                 message_text = message.text.lower()
             elif self.include_template_response and isinstance(message, TemplateResponseMessage):
-                message_text = message.text_message.lower()
+                message_text = message.text.lower()
             else:
                 return False
 

@@ -16,7 +16,7 @@ class TemplateResponseFilter(Filter):
 
     def match(self, message):
         if isinstance(message, TemplateResponseMessage):
-            text = message.text_message
+            text = message.text
             if not self.include_commands:
                 if text.startswith("/"):
                     return False
