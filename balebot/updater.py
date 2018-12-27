@@ -15,7 +15,7 @@ BotState = namedtuple('BotState', ['conversation_next_step_handlers', 'conversat
 
 
 class Updater:
-    def __init__(self, token, loop=None):
+    def __init__(self, token, base_url=Config.base_url, loop=None):
 
         self.logger = Logger.get_logger()
 
@@ -30,7 +30,7 @@ class Updater:
         self._loop = asyncio.get_event_loop() if not loop else loop
 
         self.dispatcher = Dispatcher(loop=self._loop,
-                                     token=self.token,
+                                     token=self.token, base_url=base_url,
                                      bale_futures=self.bale_futures)
 
         self.running = False
@@ -41,7 +41,7 @@ class Updater:
             bot_previous_state = pickle.loads(bot_previous_state) if bot_previous_state else None
             self.dispatcher.conversation_next_step_handlers, self.dispatcher.conversation_data = \
                 (bot_previous_state.conversation_next_step_handlers, bot_previous_state.conversation_data) \
-                if bot_previous_state else ({}, {})
+                    if bot_previous_state else ({}, {})
 
         asyncio.ensure_future(self._run_dispatcher())
         asyncio.ensure_future(self.dispatcher.bot.network.run())

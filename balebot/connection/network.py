@@ -10,10 +10,10 @@ from balebot.utils.logger import Logger
 class Network:
     """ network layer main class """
 
-    def __init__(self, token, incoming_queue=None, outgoing_queue=None, loop=None):
+    def __init__(self, token, base_url, incoming_queue=None, outgoing_queue=None, loop=None):
 
         self.logger = Logger.get_logger()
-        self._base_url = Config.base_url
+        self._base_url = base_url
         self._token = token
         self._running = False
         self._incoming_queue = incoming_queue or asyncio.Queue()
@@ -33,24 +33,30 @@ class Network:
 
             try:
                 self._session = aiohttp.ClientSession(loop=self._loop)
-                self._ws = await self._session.ws_connect(self.construct_url(),heartbeat=self._heartbeat,receive_timeout=self._receive_timeout,headers={"source":"python3.5"})
+                self._ws = await self._session.ws_connect(self.construct_url(), heartbeat=self._heartbeat,
+                                                          receive_timeout=self._receive_timeout,
+                                                          headers={"source": "python3.5"})
                 self.logger.warning('connect success: {}'.format(self.construct_url()))
             except Exception as e:
                 await self.disconnect()
                 self.logger.error('connect error: {}'.format(e),
-                                  extra={"tag": "err","type": "connection", "url": self.construct_url(), "error_type": type(e)})
+                                  extra={"tag": "err", "type": "connection", "url": self.construct_url(),
+                                         "error_type": type(e)})
                 traceback.print_exc()
 
         elif self._ws.closed:
             try:
                 if self._session.closed:
                     self._session = aiohttp.ClientSession(loop=self._loop)
-                self._ws = await self._session.ws_connect(self.construct_url(),heartbeat=self._heartbeat,receive_timeout=self._receive_timeout,headers={"source":"python3.5"})
+                self._ws = await self._session.ws_connect(self.construct_url(), heartbeat=self._heartbeat,
+                                                          receive_timeout=self._receive_timeout,
+                                                          headers={"source": "python3.5"})
                 self.logger.warning('reconnect success: {}'.format(self.construct_url()))
             except Exception as e:
                 await self.disconnect()
                 self.logger.error('reconnect error: {}'.format(e),
-                                  extra={"tag": "err", "type": "connection", "url": self.construct_url(), "error_type": type(e)})
+                                  extra={"tag": "err", "type": "connection", "url": self.construct_url(),
+                                         "error_type": type(e)})
                 traceback.print_exc()
 
         return self._ws
