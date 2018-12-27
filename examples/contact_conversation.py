@@ -9,7 +9,7 @@ from balebot.models.messages.contact_message import ContactMessage
 from balebot.updater import Updater
 
 # Bale Bot Authorization Token
-updater = Updater(token="PUT YOUR TOKEN HERE",
+updater = Updater(token="TOKEN",
                   loop=asyncio.get_event_loop())
 dispatcher = updater.dispatcher
 

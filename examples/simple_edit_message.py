@@ -9,7 +9,7 @@ from balebot.utils.logger import Logger
 
 # Bale Bot Authorization Token
 
-updater = Updater(token="PUT YOUR TOKEN HERE",
+updater = Updater(token="TOKEN",
                   loop=asyncio.get_event_loop())
 # Define dispatcher
 dispatcher = updater.dispatcher
