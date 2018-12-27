@@ -22,6 +22,9 @@ class Updater:
         if not token:
             raise ValueError("`token` did't passed")
 
+        if not base_url:
+            raise ValueError("`base_url` did't passed")
+
         self.token = token
         self.timeout = Config.request_timeout
 
