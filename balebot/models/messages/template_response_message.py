@@ -9,6 +9,7 @@ from balebot.models.constants.message_type import MessageType
 class TemplateResponseMessage(BaseMessage):
     def __init__(self, text, template_message_response_id):
         self.text = str(text)
+        self.text_message = self.text
         self.template_message_response_id = str(template_message_response_id)
 
     def get_json_object(self):
