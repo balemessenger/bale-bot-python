@@ -1,7 +1,7 @@
 # Changelog
 [![Build Status](https://avatars1.githubusercontent.com/u/35299314?s=200&v=4)](https://github.com/balemessenger)
 
-## [1.5.11] - 2018-12-23
+## [1.5.11] - 2019-01-03
 ### Added
 - added validator parameter to filters as a callable function to validate the inputs
 - added text field among with text_message filed to template response message for unifying
