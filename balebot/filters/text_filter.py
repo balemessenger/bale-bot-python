@@ -4,7 +4,8 @@ from balebot.filters.filter import Filter
 
 
 class TextFilter(Filter):
-    def __init__(self, keywords=None, pattern=None, include_commands=True):
+    def __init__(self, keywords=None, pattern=None, validator=None, include_commands=True):
+        super(TextFilter, self).__init__(validator)
         self.keywords = []
         if isinstance(keywords, list):
             self.keywords += keywords
@@ -12,6 +13,7 @@ class TextFilter(Filter):
             self.keywords.append(keywords)
 
         self.pattern = pattern
+        self.validator = validator if callable(validator) else None
         self.include_commands = include_commands
 
     def match(self, message):
@@ -21,12 +23,14 @@ class TextFilter(Filter):
                 if text.startswith("/"):
                     return False
 
-            if not self.pattern and not self.keywords:
+            if not self.pattern and not self.keywords and not self.validator:
                 return True
 
             if self.find_keywords(text):
                 return True
             elif self.find_pattern(text):
+                return True
+            elif self.validate(text):
                 return True
         else:
             return False
