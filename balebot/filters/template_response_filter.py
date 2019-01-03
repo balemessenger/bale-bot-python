@@ -4,14 +4,15 @@ from balebot.filters.filter import Filter
 
 
 class TemplateResponseFilter(Filter):
-    def __init__(self, keywords=None, exact=None, pattern=None, validator=None, include_commands=True):
+    def __init__(self, keywords=None, pattern=None, validator=None, include_commands=True):
+        super(TemplateResponseFilter, self).__init__(validator)
         self.keywords = []
         if isinstance(keywords, list):
             self.keywords += keywords
         elif isinstance(keywords, str):
             self.keywords.append(keywords)
 
-        self.pattern = ('^' + str(exact) + '$') if exact else pattern
+        self.pattern = pattern
         self.validator = validator if callable(validator) else None
         self.include_commands = include_commands
 
