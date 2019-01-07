@@ -45,5 +45,4 @@ class TextFilter(Filter):
     def find_pattern(self, text):
         if self.pattern:
             return re.search(self.pattern, text)
-        else:
-            return False
+        return False

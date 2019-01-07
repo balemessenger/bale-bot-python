@@ -6,4 +6,4 @@ class Filter:
         raise NotImplementedError
 
     def validate(self, obj):
-        return self.validator(obj) if self.validator else True
+        return self.validator(obj) if self.validator else False
