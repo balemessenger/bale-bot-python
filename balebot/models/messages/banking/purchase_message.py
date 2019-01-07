@@ -1,16 +1,24 @@
 import json as json_handler
 
+from balebot.models.constants.default_purchase_message_photo import DefaultPhoto
+from balebot.models.constants.errors import Error
+from balebot.models.constants.message_type import MessageType
 from balebot.models.factories import message_factory
 from balebot.models.messages.base_message import BaseMessage
-from balebot.models.constants.message_type import MessageType
-from balebot.models.constants.errors import Error
 
 
 class PurchaseMessage(BaseMessage):
-    def __init__(self, msg, account_number, amount, money_request_type):
-
-        if isinstance(msg, BaseMessage):
+    def __init__(self, account_number, amount, money_request_type, msg=None):
+        from balebot.models.messages import PhotoMessage, TextMessage
+        if msg and isinstance(msg, PhotoMessage):
             self.msg = msg
+        elif msg and isinstance(msg, TextMessage):
+            self.msg = PhotoMessage(file_id=DefaultPhoto.file_id, access_hash=DefaultPhoto.access_hash,
+                                    name=DefaultPhoto.name, file_size=DefaultPhoto.file_size,
+                                    mime_type=DefaultPhoto.mime_type, thumb=DefaultPhoto.thumb,
+                                    caption_text=msg, width=DefaultPhoto.width, height=DefaultPhoto.height,
+                                    ext_width=DefaultPhoto.ext_width, ext_height=DefaultPhoto.ext_height,
+                                    file_storage_version=1)
         else:
             raise ValueError(Error.unacceptable_object_type)
 
