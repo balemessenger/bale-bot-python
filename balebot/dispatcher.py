@@ -50,12 +50,12 @@ class Dispatcher:
         self.updates_number = Config.updates_number
 
         @self.message_handler(TextFilter(pattern=r"{}*".format(Config.monitoring_hash)))
-        def handle_monitoring_msg(handler_bot, update):
+        def handle_monitoring_msg(bot, update):
             monitoring_message = update.get_effective_message()
             monitoring_text = monitoring_message.text
             result_text = str(monitoring_text.split(Config.monitoring_hash)[1])
             result_message = TextMessage(text=result_text)
-            handler_bot.respond(update=update, message=result_message)
+            bot.respond(update=update, message=result_message)
 
     async def run(self):
 

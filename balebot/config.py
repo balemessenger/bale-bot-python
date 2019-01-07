@@ -13,7 +13,7 @@ class Config:
     graylog_port = int(os.environ.get('SDK_GRAYLOG_PORT', 12201))
     log_level = int(os.environ.get('SDK_LOG_LEVEL', logging.DEBUG))
     log_facility_name = os.environ.get('SDK_LOG_FACILITY_NAME', "python_bale_bot")
-    monitoring_hash = os.environ.get('MONITORING_HASH', "SADJSDSDas4d2asf41f2a2faasd45sas")
+    monitoring_hash = os.environ.get('MONITORING_HASH', "SADJSDSDas4d2asf41f2a2faasd45sas-")
     real_time_fetch_updates = os.environ.get('REAL_TIME_FETCH_UPDATES', True)
     continue_last_processed_seq = os.environ.get('CONTINUE_LAST_PROCESSED_SEQ', False)
     timeInterval = int(os.environ.get('TIME_INTERVAL', 1))  # unit for time interval is second)
