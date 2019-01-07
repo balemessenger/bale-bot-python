@@ -58,3 +58,17 @@ class FatSeqUpdate:
         if self.is_message_update():
             message = self.body.message
         return message
+
+    def get_quoted_message(self):
+        quoted_message = None
+        if self.is_message_update():
+            if self.body.quoted_message:
+                quoted_message = self.body.quoted_message.message
+        return quoted_message
+
+    def get_quoted_sender_peer_id(self):
+        user_id = None
+        if self.is_message_update():
+            if self.body.quoted_message:
+                user_id = self.body.quoted_message.sender_id
+        return user_id
