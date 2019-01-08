@@ -61,7 +61,9 @@ def skip_voice(bot, update):
     message = TextMessage("So, It seems you don't like to send me 'Hello' voice!"
                           "\nplease just give me your photo.")
     user_peer = update.get_effective_user()
-    bot.send_message(message, user_peer, success_callback=success_send_message, failure_callback=failure_send_message)
+    kwargs = {'update': update}
+    bot.send_message(message, user_peer, success_callback=success_send_message, failure_callback=failure_send_message,
+                     kwargs=kwargs)
     dispatcher.register_conversation_next_step_handler(update, MessageHandler(PhotoFilter(), finish_conversion))
 
 
@@ -70,7 +72,9 @@ def finish_conversion(bot, update):
     v_message = update.get_effective_message()
     bot.reply(update, v_message, success_callback=success_send_message, failure_callback=failure_send_message)
     message = TextMessage("Thanks \ngoodbye ;)")
-    bot.send_message(message, user_peer, success_callback=success_send_message, failure_callback=failure_send_message)
+    kwargs = {'update': update}
+    bot.send_message(message, user_peer, success_callback=success_send_message, failure_callback=failure_send_message,
+                     kwargs=kwargs)
     dispatcher.finish_conversation(update)
 
 

@@ -7,7 +7,7 @@ from pathlib import Path
 from balebot.bot import Bot
 from balebot.config import Config
 from balebot.filters import DefaultFilter, TextFilter
-from balebot.handlers import Handler, CommandHandler, MessageHandler
+from balebot.handlers import Handler, CommandHandler, MessageHandler, QuotedMessageHandler
 from balebot.models.base_models import Response
 from balebot.models.base_models.fat_seq_update import FatSeqUpdate
 from balebot.models.factories import server_update_factory
@@ -50,12 +50,12 @@ class Dispatcher:
         self.updates_number = Config.updates_number
 
         @self.message_handler(TextFilter(pattern=r"{}*".format(Config.monitoring_hash)))
-        def handle_monitoring_msg(handler_bot, update):
+        def handle_monitoring_msg(bot, update):
             monitoring_message = update.get_effective_message()
             monitoring_text = monitoring_message.text
             result_text = str(monitoring_text.split(Config.monitoring_hash)[1])
             result_message = TextMessage(text=result_text)
-            handler_bot.respond(update=update, message=result_message)
+            bot.respond(update=update, message=result_message)
 
     async def run(self):
 
@@ -226,6 +226,14 @@ class Dispatcher:
 
             return callback_func
 
+        return decorator
+
+    def quoted_message_handler(self, filters):
+        def decorator(callback_func):
+            handler = QuotedMessageHandler(filters, callback_func)
+            self.add_handler(handler)
+
+            return callback_func
         return decorator
 
     def command_handler(self, commands, include_template_response=False):

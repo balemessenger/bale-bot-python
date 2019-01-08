@@ -4,6 +4,9 @@ from balebot.models.base_models.banking.bank_ext import BankExt
 from balebot.models.base_models.value_types.map_value import MapValue
 from balebot.models.constants.bank_ext_types import BankExtTypes
 from balebot.models.constants.errors import Error
+from collections import namedtuple
+
+from balebot.models.factories.raw_value_factory import RawValueFactory
 
 
 class ReceiptMessage(BankExt):
@@ -29,6 +32,13 @@ class ReceiptMessage(BankExt):
 
     def get_json_str(self):
         return json_handler.dumps(self.get_json_object())
+
+    def generate_receipt_from_transfer_info_items(self):
+        BankReceipt = namedtuple('BankReceipt', [item.key for item in self.transfer_info.items])
+        params = [RawValueFactory.get_value(self.transfer_info.items[i].value)
+                  for i in range(self.transfer_info.items.__len__())]
+        bank_receipt = BankReceipt(*params)
+        return bank_receipt
 
     @classmethod
     def load_from_json(cls, json):

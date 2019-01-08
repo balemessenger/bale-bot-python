@@ -1,11 +1,10 @@
 import json as json_handler
 
+from balebot.models.base_models.banking.bank_ext import BankExt
+from balebot.models.constants.errors import Error
 from balebot.models.constants.message_type import MessageType
 from balebot.models.factories import bank_ext_factory
 from balebot.models.messages.base_message import BaseMessage
-from balebot.models.constants.errors import Error
-
-from balebot.models.base_models.banking.bank_ext import BankExt
 
 
 class BankMessage(BaseMessage):
@@ -15,6 +14,11 @@ class BankMessage(BaseMessage):
             self.bank_ext_message = bank_ext_message
         else:
             raise ValueError(Error.unacceptable_object_type)
+
+    def get_receipt(self):
+        from balebot.models.base_models.banking.receipt_message import ReceiptMessage
+        if isinstance(self.bank_ext_message, ReceiptMessage):
+            return self.bank_ext_message.generate_receipt_from_transfer_info_items()
 
     def get_json_object(self):
 

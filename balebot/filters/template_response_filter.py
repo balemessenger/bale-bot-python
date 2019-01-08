@@ -47,7 +47,3 @@ class TemplateResponseFilter(Filter):
             return re.search(self.pattern, text)
         else:
             return False
-
-    def validate(self, text):
-        if self.validator:
-            return self.validator(text)

@@ -33,3 +33,26 @@ class RawValueFactory:
 
         elif raw_value_type == ValueType.map_value:
             return map_value.MapValue.load_from_json(json_dict)
+
+    @staticmethod
+    def get_value(raw_value):
+        if isinstance(raw_value, int32_val.Int32Val):
+            return raw_value.value
+
+        if isinstance(raw_value, int64_val.Int64Val):
+            return raw_value.value
+
+        elif isinstance(raw_value, boolean_value.BooleanValue):
+            return raw_value.value
+
+        elif isinstance(raw_value, double_val.DoubleVal):
+            return raw_value.value
+
+        elif isinstance(raw_value, string_val.StringVal):
+            return raw_value.text
+
+        elif isinstance(raw_value, array_val.ArrayVal):
+            return raw_value.values
+
+        elif isinstance(raw_value, map_value.MapValue):
+            return raw_value.items
