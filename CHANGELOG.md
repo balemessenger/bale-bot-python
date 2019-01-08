@@ -7,7 +7,7 @@
  FatSeqUpdate for getting replied and forwarded messages
 - default photo and message type limitation for purchase message
 - get_receipt function to BankMessage for getting receipt info as a named tuple
-- get_receipt and get_quoted_message example
+- get_receipt and get_quoted_message examples
 ### fixed
 - filters problem
 - handle monitoring hash function problem

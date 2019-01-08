@@ -20,7 +20,12 @@ class PurchaseMessage(BaseMessage):
                                     ext_width=DefaultPhoto.ext_width, ext_height=DefaultPhoto.ext_height,
                                     file_storage_version=1)
         else:
-            raise ValueError(Error.unacceptable_object_type)
+            self.msg = PhotoMessage(file_id=DefaultPhoto.file_id, access_hash=DefaultPhoto.access_hash,
+                                    name=DefaultPhoto.name, file_size=DefaultPhoto.file_size,
+                                    mime_type=DefaultPhoto.mime_type, thumb=DefaultPhoto.thumb,
+                                    caption_text=TextMessage(""), width=DefaultPhoto.width, height=DefaultPhoto.height,
+                                    ext_width=DefaultPhoto.ext_width, ext_height=DefaultPhoto.ext_height,
+                                    file_storage_version=1)
 
         self.account_number = str(account_number)
 
