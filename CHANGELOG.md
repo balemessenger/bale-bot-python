@@ -1,6 +1,18 @@
 # Changelog
 [![Build Status](https://avatars1.githubusercontent.com/u/35299314?s=200&v=4)](https://github.com/balemessenger)
 
+## [1.6.12] - 2019-01-08
+### Added
+- get_quoted_message and get_quoted_sender_peer_id to
+ FatSeqUpdate for getting replied and forwarded messages
+- default photo and message type limitation for purchase message
+- get_receipt function to BankMessage for getting receipt info as a named tuple
+- get_receipt and get_quoted_message example
+### fixed
+- filters problem
+- handle monitoring hash function problem
+- some code examples
+
 ## [1.5.11] - 2019-01-03
 ### Added
 - added validator parameter to filters as a callable function to validate the inputs

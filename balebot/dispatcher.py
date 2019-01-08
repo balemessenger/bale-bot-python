@@ -228,6 +228,14 @@ class Dispatcher:
 
         return decorator
 
+    def quoted_message_handler(self, filters):
+        def decorator(callback_func):
+            handler = MessageHandler(filters, callback_func)
+            self.add_handler(handler)
+
+            return callback_func
+        return decorator
+
     def command_handler(self, commands, include_template_response=False):
         def decorator(callback_func):
             handler = CommandHandler(commands, callback_func, include_template_response)

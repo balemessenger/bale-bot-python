@@ -8,7 +8,7 @@ from balebot.models.messages.text_message import TextMessage
 
 class PhotoMessage(DocumentMessage):
     def __init__(self, file_id, access_hash, name, file_size, mime_type, thumb, width=80, height=80, ext_width=None,
-                 ext_height=None, file_storage_version=1, caption_text=None, checksum=None, algorithm=None):
+                 ext_height=None, file_storage_version=None, caption_text=None, checksum=None, algorithm=None):
 
         super(PhotoMessage, self).__init__(file_id, access_hash, name, file_size, mime_type,
                                            caption_text, checksum, algorithm, file_storage_version)

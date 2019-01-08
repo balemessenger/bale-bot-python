@@ -8,7 +8,7 @@ from balebot.models.messages.text_message import TextMessage
 
 
 class VoiceMessage(DocumentMessage):
-    def __init__(self, file_id, access_hash, name, file_size, mime_type, duration, file_storage_version=1,
+    def __init__(self, file_id, access_hash, name, file_size, mime_type, duration, file_storage_version=None,
                  caption_text=None, checksum=None, algorithm=None):
 
         super(VoiceMessage, self).__init__(file_id, access_hash, name, file_size, mime_type,
