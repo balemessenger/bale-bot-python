@@ -7,7 +7,7 @@ from pathlib import Path
 from balebot.bot import Bot
 from balebot.config import Config
 from balebot.filters import DefaultFilter, TextFilter
-from balebot.handlers import Handler, CommandHandler, MessageHandler
+from balebot.handlers import Handler, CommandHandler, MessageHandler, QuotedMessageHandler
 from balebot.models.base_models import Response
 from balebot.models.base_models.fat_seq_update import FatSeqUpdate
 from balebot.models.factories import server_update_factory
@@ -230,7 +230,7 @@ class Dispatcher:
 
     def quoted_message_handler(self, filters):
         def decorator(callback_func):
-            handler = MessageHandler(filters, callback_func)
+            handler = QuotedMessageHandler(filters, callback_func)
             self.add_handler(handler)
 
             return callback_func
