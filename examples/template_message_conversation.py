@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 """Template simple conversation with bot."""
 import asyncio
 
@@ -11,21 +14,17 @@ from balebot.utils.logger import Logger
 updater = Updater(token="TOKEN",
                   loop=asyncio.get_event_loop())
 dispatcher = updater.dispatcher
-my_logger = Logger.get_logger()  # Create a logger and name it my_logger
+
+# Enable logging
+logger = Logger.get_logger()
 
 
 def success_send_message(response, user_data):
-    kwargs = user_data['kwargs']
-    update = kwargs["update"]
-    user_peer = update.get_effective_user()
-    my_logger.info("Your message has been sent successfully.", extra={"user_id": user_peer.peer_id, "tag": "info"})
+    logger.info("Your message has been sent successfully.", extra={"tag": "info"})
 
 
 def failure_send_message(response, user_data):
-    kwargs = user_data['kwargs']
-    update = kwargs["update"]
-    user_peer = update.get_effective_user()
-    my_logger.error("Sending message has been failed", extra={"user_id": user_peer.peer_id, "tag": "error"})
+    logger.error("Sending message has been failed", extra={"tag": "error"})
 
 
 @dispatcher.command_handler(["/start"])
@@ -50,11 +49,9 @@ def ask_question(bot, update):
     template_message = TemplateMessage(general_message=general_message, btn_list=btn_list)
     bot.send_message(template_message, user_peer, success_callback=success_send_message,
                      failure_callback=failure_send_message)
-    dispatcher.register_conversation_next_step_handler(update,
-                                                       [MessageHandler(TemplateResponseFilter(keywords=["yes"]),
-                                                                       positive_answer),
-                                                        MessageHandler(TemplateResponseFilter(keywords=["no"]),
-                                                                       negative_answer)])
+    dispatcher.register_conversation_next_step_handler(
+        update, [MessageHandler(TemplateResponseFilter(keywords=["yes"]), positive_answer),
+                 MessageHandler(TemplateResponseFilter(keywords=["no"]), negative_answer)])
 
 
 # Use when answer is 'yes'
@@ -86,4 +83,5 @@ def finish_conversion(bot, update):
     dispatcher.finish_conversation(update)
 
 
-updater.run()
+if __name__ == '__main__':
+    updater.run()
