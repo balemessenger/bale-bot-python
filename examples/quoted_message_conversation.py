@@ -20,11 +20,17 @@ logger = Logger.get_logger()
 
 
 def success_send_message(response, user_data):
-    logger.info("Your message has been sent successfully.", extra={"tag": "info"})
+    kwargs = user_data['kwargs']
+    update = kwargs["update"]
+    user_peer = update.get_effective_user()
+    logger.info("Your message has been sent successfully.", extra={"user_id": user_peer.peer_id, "tag": "info"})
 
 
 def failure_send_message(response, user_data):
-    logger.error("Sending message has been failed", extra={"tag": "error"})
+    kwargs = user_data['kwargs']
+    update = kwargs["update"]
+    user_peer = update.get_effective_user()
+    logger.error("Sending message has been failed", extra={"user_id": user_peer.peer_id, "tag": "error"})
 
 
 @dispatcher.command_handler(["/start"])
