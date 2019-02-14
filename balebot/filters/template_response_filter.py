@@ -37,9 +37,8 @@ class TemplateResponseFilter(Filter):
 
     def find_keywords(self, text):
         for keyword in self.keywords:
-            if keyword:
-                if text.find(keyword) != -1:
-                    return True
+            if keyword == text:
+                return True
         return False
 
     def find_pattern(self, text):
