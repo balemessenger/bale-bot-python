@@ -32,10 +32,10 @@ class TemplateResponseMessage(BaseMessage):
         else:
             raise ValueError(Error.unacceptable_json)
 
-        text = json_dict.get("textMessage", None)
+        text_message = json_dict.get("textMessage", None)
         template_message_response_id = json_dict.get("templateMessageResponseId", None)
 
-        if (text is None) or (template_message_response_id is None):
+        if (text_message is None) or (template_message_response_id is None):
             raise ValueError(Error.none_or_invalid_attribute)
 
-        return cls(text=text, template_message_response_id=template_message_response_id)
+        return cls(text=text_message, template_message_response_id=template_message_response_id)

@@ -8,6 +8,7 @@ from balebot.models.constants.message_type import MessageType
 
 class TextMessage(BaseMessage):
     def __init__(self, text):
+
         self.text = str(text) if text else ""
 
     def get_json_object(self):
