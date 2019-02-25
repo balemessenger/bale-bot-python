@@ -23,4 +23,4 @@ class Config:
     redis_host = os.getenv('REDIS_HOST', "localhost")
     redis_port = int(os.getenv('REDIS_PORT', 6379))
     redis_db = os.getenv('REDIS_DB', 0)
-    group_shield = int(os.getenv('GROUP_SHIELD', 1))
+    group_shield = int(os.getenv('GROUP_SHIELD', 0))

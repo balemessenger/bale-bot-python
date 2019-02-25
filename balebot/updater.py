@@ -1,5 +1,6 @@
 import asyncio
 import pickle
+import signal
 import traceback
 from collections import namedtuple
 
@@ -39,6 +40,7 @@ class Updater:
         self.running = False
 
     def run(self, stop_after=None):
+        signal.signal(signal.SIGTERM, self.stop)
         if Config.state_holder:
             bot_previous_state = redis_db.get(self.token)
             bot_previous_state = pickle.loads(bot_previous_state) if bot_previous_state else None

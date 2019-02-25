@@ -81,9 +81,8 @@ class Bot:
     # messaging
     def send_message(self, message, peer, quoted_message=None, random_id=None, success_callback=None,
                      failure_callback=None, **kwargs):
-        receiver = peer
-        request_body = SendMessage(message=message, receiver_peer=receiver,
-                                   quoted_message=quoted_message, random_id=random_id)
+        request_body = SendMessage(message=message, receiver_user=peer, quoted_message=quoted_message,
+                                   random_id=random_id)
         request = Request(service=ServiceType.Messaging, body=request_body)
         self.set_future(request.id, request_body, success_callback, failure_callback, **kwargs)
         self.send_request(request.get_json_str())
