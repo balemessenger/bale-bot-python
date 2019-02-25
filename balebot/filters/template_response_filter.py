@@ -4,13 +4,18 @@ from balebot.filters.filter import Filter
 
 
 class TemplateResponseFilter(Filter):
-    def __init__(self, keywords=None, pattern=None, validator=None, include_commands=True):
+    def __init__(self, keywords=None, exact_keywords=None, pattern=None, validator=None, include_commands=True):
         super(TemplateResponseFilter, self).__init__(validator)
         self.keywords = []
+        self.exact_keywords = []
         if isinstance(keywords, list):
             self.keywords += keywords
         elif isinstance(keywords, str):
             self.keywords.append(keywords)
+        if isinstance(exact_keywords, list):
+            self.exact_keywords += exact_keywords
+        elif isinstance(keywords, str):
+            self.exact_keywords.append(exact_keywords)
 
         self.pattern = pattern
         self.validator = validator if callable(validator) else None
@@ -19,14 +24,13 @@ class TemplateResponseFilter(Filter):
     def match(self, message):
         if isinstance(message, TemplateResponseMessage):
             text = message.text
-            if not self.include_commands:
-                if text.startswith("/"):
-                    return False
-
+            if not self.include_commands and text.startswith("/"):
+                return False
             if not self.pattern and not self.keywords and not self.validator:
                 return True
-
             if self.find_keywords(text):
+                return True
+            elif self.find_exact_keywords(text):
                 return True
             elif self.find_pattern(text):
                 return True
@@ -37,6 +41,13 @@ class TemplateResponseFilter(Filter):
 
     def find_keywords(self, text):
         for keyword in self.keywords:
+            if keyword:
+                if text.find(keyword) != -1:
+                    return True
+        return False
+
+    def find_exact_keywords(self, text):
+        for keyword in self.exact_keywords:
             if keyword == text:
                 return True
         return False
