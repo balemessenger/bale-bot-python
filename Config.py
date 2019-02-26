@@ -4,7 +4,7 @@ import os
 
 class Config:
     base_url = os.environ.get('BASE_URL', "wss://api.bale.ai/v1/bots/")
-    request_timeout = int(os.environ.get('REQUEST_TIMEOUT', 5))
+    request_timeout = int(os.environ.get('REQUEST_TIMEOUT', 15))
     # 0:print to output        1:use graylog       2:both 0 and 1
     use_graylog = os.environ.get('SDK_USE_GRAYLOG', "2")
     graylog_host = os.environ.get('SDK_GRAYLOG_HOST', "127.0.0.1")
