@@ -12,4 +12,4 @@ class Config:
     log_level = int(os.environ.get('SDK_LOG_LEVEL', logging.DEBUG))
     log_facility_name = os.environ.get('SDK_LOG_FACILITY_NAME', "python_bale_bot")
     source = os.environ.get('LOG_SOURCE', "bot_source")
-    heartbeat = int(os.environ.get("HEARTBEAT",30))
+    heartbeat = int(os.environ.get("HEARTBEAT", 30))
