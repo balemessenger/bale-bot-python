@@ -1,7 +1,7 @@
 # Changelog
 [![Build Status](https://avatars1.githubusercontent.com/u/35299314?s=200&v=4)](https://github.com/balemessenger)
 
-## [1.7.13] - 2019-02-26
+## [1.7.14] - 2019-03-02
 ### Added
 - exact_keywords argument to text_filter and template_response_filter
 - termination signal handling
