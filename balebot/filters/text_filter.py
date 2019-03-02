@@ -14,7 +14,7 @@ class TextFilter(Filter):
             self.keywords.append(keywords)
         if isinstance(exact_keywords, list):
             self.exact_keywords += exact_keywords
-        elif isinstance(keywords, str):
+        elif isinstance(exact_keywords, str):
             self.exact_keywords.append(exact_keywords)
 
         self.pattern = pattern
@@ -26,9 +26,9 @@ class TextFilter(Filter):
             text = message.text
             if not self.include_commands and text.startswith("/"):
                 return False
-            if not self.pattern and not self.keywords and not self.validator:
+            if not self.pattern and not self.keywords and not self.validator and not self.exact_keywords:
                 return True
-            if self.find_keywords(text):
+            elif self.find_keywords(text):
                 return True
             elif self.find_exact_keywords(text):
                 return True
@@ -40,8 +40,8 @@ class TextFilter(Filter):
             return False
 
     def find_keywords(self, text):
-        for keyword in self.keywords:
-            if keyword == text:
+        for exact_keyword in self.keywords:
+            if exact_keyword == text:
                 return True
         return False
 
