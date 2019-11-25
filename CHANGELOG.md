@@ -1,6 +1,16 @@
 # Changelog
 [![Build Status](https://avatars1.githubusercontent.com/u/35299314?s=200&v=4)](https://github.com/balemessenger)
 
+## [1.7.14] - 2019-03-02
+### Added
+- exact_keywords argument to text_filter and template_response_filter
+- termination signal handling
+- sengin to channel by nickName
+### fixed
+- code examples
+- base_url added to updater arguments
+- set default group shield to off
+
 ## [1.6.12] - 2019-01-08
 ### Added
 - get_quoted_message and get_quoted_sender_peer_id to

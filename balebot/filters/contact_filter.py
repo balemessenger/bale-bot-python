@@ -5,8 +5,4 @@ from balebot.filters.filter import Filter
 
 class ContactFilter(Filter):
     def match(self, message):
-        if isinstance(message, JsonMessage):
-            raw_json = message.raw_json
-            return isinstance(raw_json, ContactMessage)
-        else:
-            return False
+        return isinstance(message, ContactMessage)
