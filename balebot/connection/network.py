@@ -1,7 +1,7 @@
 import asyncio
+import time
 import traceback
 import aiohttp
-import backoff
 
 from balebot.config import Config
 from balebot.utils.logger import Logger
@@ -26,16 +26,22 @@ class Network:
         self._sender_task = None
         self._heartbeat = Config.heartbeat
         self._receive_timeout = Config.receive_timeout
+        self.retry = 0
 
-    @backoff.on_predicate(backoff.fibo)
+    async def websocket_connect(self):
+        if self.retry < 5:
+            self.retry += 1
+        time.sleep(self.retry * pow(2, self.retry))
+        return await self._session.ws_connect(self.construct_url(), heartbeat=self._heartbeat,
+                                              receive_timeout=self._receive_timeout,
+                                              headers={"source": "python3.5"})
+
     async def connect(self):
         if self._ws is None:
 
             try:
                 self._session = aiohttp.ClientSession(loop=self._loop)
-                self._ws = await self._session.ws_connect(self.construct_url(), heartbeat=self._heartbeat,
-                                                          receive_timeout=self._receive_timeout,
-                                                          headers={"source": "python3.5"})
+                self._ws = await self.websocket_connect()
                 self.logger.warning('connect success: {}'.format(self.construct_url()))
             except Exception as e:
                 await self.disconnect()
@@ -48,9 +54,7 @@ class Network:
             try:
                 if self._session.closed:
                     self._session = aiohttp.ClientSession(loop=self._loop)
-                self._ws = await self._session.ws_connect(self.construct_url(), heartbeat=self._heartbeat,
-                                                          receive_timeout=self._receive_timeout,
-                                                          headers={"source": "python3.5"})
+                self._ws = await self.websocket_connect()
                 self.logger.warning('reconnect success: {}'.format(self.construct_url()))
             except Exception as e:
                 await self.disconnect()
