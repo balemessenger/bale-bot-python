@@ -8,7 +8,7 @@ requires = [
         'aiohttp==2.3.7',
         'asyncio==3.4.3',
         'graypy==0.2.14',
-        'pillow==5.2.0',
+        'pillow==8.2.0',
         'redis==3.0.1'
         ]
 
