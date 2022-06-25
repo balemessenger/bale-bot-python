@@ -5,7 +5,7 @@ from setuptools import find_packages, setup
 here = os.path.abspath(os.path.dirname(__file__))
 
 requires = [
-        'aiohttp==2.3.7',
+        'aiohttp==3.8.1',
         'asyncio==3.4.3',
         'graypy==0.2.14',
         'pillow==5.2.0',
